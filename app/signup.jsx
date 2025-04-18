@@ -1,0 +1,425 @@
+// import { View, Image, TextInput, ScrollView } from "react-native";
+// import React from "react";
+// import { useRouter } from "expo-router";
+// import MyButton from "@/components/MyButton";
+
+// const SignUp = () => {
+//   const router = useRouter();
+//   const onRegister = () => {
+//     router.navigate("/login");
+//   };
+// // const {value,setValue}=useState(); //setValue is function
+// //let a=0; const setValue=(val)=>{a=val;}, value can be string array object anything
+// // call setValue(100) console.log(a)-> o/p is 100
+// //const [value,setValue]=useState({value1:"",value2:""}) //object hai
+// //onChangeText={(e)=?setValue((prev)=>({...prev,value1:e}))} prev as purani value override ho jati hai
+// //onChangeText={(e)=?setValue((prev)=>({...prev,value2:e}))}
+// //useEffect(()=>{ isme jo bhi dalenge vo baar baar run nahi hoga when u chnage/type/click in app},[ idhar vo cheeze dalo jiske change hone pe api call ho]) 
+// //page load hone ke baad hi call hoga uske baad nahi, api ek hi baar use hoga
+//   return (
+//     <ScrollView  contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+      
+//       <View
+//       // can do horizontal also ,map method use kar sakte ho for repeative divs display
+//         style={{
+//           flex: 1,
+//           justifyContent: "center",
+//           alignItems: "center",
+//           paddingBottom: 20, // Ensure there is space at the bottom of the page
+//         }}
+//       >
+//         <Image
+//           source={require("@/assets/images/my.jpg")}
+//           style={{ width: "100%", height: 400 }}
+//           resizeMode="cover"
+//         />
+//         <View style={{ padding: 20, gap: 20, width: "80%" }}>
+//           <TextInput
+//             placeholder="Enter Your Email"
+//             style={{
+//               borderWidth: 1,
+//               height: 50,
+//               paddingHorizontal: 20,
+//               borderRadius: 10,
+//               marginBottom: 10,
+//             }}
+//           />
+//              <TextInput
+//             placeholder="Enter Your Email"
+//             style={{
+//               borderWidth: 1,
+//               height: 50,
+//               paddingHorizontal: 20,
+//               borderRadius: 10,
+//               marginBottom: 10,
+//             }}
+//           />
+//           <TextInput
+//             placeholder="Enter Your Email"
+//             style={{
+//               borderWidth: 1,
+//               height: 50,
+//               paddingHorizontal: 20,
+//               borderRadius: 10,
+//               marginBottom: 10,
+//             }}
+//           />
+//           <TextInput
+//             placeholder="Enter Your Password"
+//             style={{
+//               borderWidth: 1,
+//               height: 50,
+//               paddingHorizontal: 20,
+//               borderRadius: 10,
+//               marginBottom: 10,
+//             }}
+//           />
+//           <TextInput
+//             placeholder="Confirm Your Password"
+//             style={{
+//               borderWidth: 1,
+//               height: 50,
+//               paddingHorizontal: 20,
+//               borderRadius: 10,
+//               marginBottom: 10,
+//             }}
+//           />
+//           <MyButton className="bg-red-50red" title={"Register"} onPress={onRegister} />
+//         </View>
+//       </View>
+      
+//     </ScrollView>
+//   );
+// };
+
+// export default SignUpScreen;
+
+// screens/signup.jsx
+// import React from 'react';
+
+// const SignUpScreen = () => {
+//   return (
+//     <div>Sign Up</div> // Your actual JSX here
+//   );
+// };
+
+// export default SignUpScreen;  // Default export
+import React, { useRef, useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Animated,
+  StyleSheet,
+  Easing,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import BubbleGroup from '../components/BubbleGroup';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export default function SignupScreen() {
+  const inputOpacity = useRef(new Animated.Value(0)).current;
+  const buttonSlide = useRef(new Animated.Value(100)).current;
+  const navigation = useNavigation();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    Animated.stagger(300, [
+      Animated.timing(inputOpacity, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.timing(buttonSlide, {
+        toValue: 0,
+        duration: 600,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  const handleSignup = async () => {
+    setLoading(true);
+    setErrorMessage('');
+    try {
+      const res = await axios.post('https://passport-wl8y.onrender.com/user/signup', {
+        email,
+        password,
+        confirmPassword,
+      });
+      console.log(res.data);  // Log to check the response
+      const { userId } = res.data; // Get userId from response
+  
+      if (userId) {
+        // Call login API with userId to fetch the token
+        const loginRes = await axios.post('https://passport-wl8y.onrender.com/user/login', {
+          email,
+          password,
+        });
+  
+        const token = loginRes.data.token; // Corrected here: token should be accessed from loginRes.data.token
+        console.log(token);
+  
+        if (token) {
+          // Store the JWT token in AsyncStorage
+          await AsyncStorage.setItem('authToken', token);
+  
+          Alert.alert('Success', 'Account created successfully!');
+          navigation.replace('home'); // Redirect to the home page after signup
+        }
+      }
+    } catch (err) {
+      console.error('Signup error:', err);
+      const msg = err?.response?.data?.error || 'Signup failed';
+      setErrorMessage(msg);
+      setTimeout(() => setErrorMessage(''), 4000);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
+  return (
+    <View style={styles.container}>
+      <BubbleGroup />
+
+      <TouchableOpacity
+        style={styles.backIcon}
+        onPress={() => navigation.navigate('index')}
+      >
+        <Ionicons name="arrow-back" size={30} color="#000" />
+      </TouchableOpacity>
+
+      <Text style={styles.header}>Create Your Magical{'\n'}Account!</Text>
+
+      <Animated.View style={[styles.combinedInputContainer, { opacity: inputOpacity }]}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Parent’s Email</Text>
+          <TextInput
+            placeholder="demo@gmail.com"
+            placeholderTextColor="#aaa"
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Password</Text>
+          <View style={[styles.passwordWrapper, { borderColor: '#aaa', borderWidth: 1 }]}>
+            <TextInput
+              placeholder="••••••••"
+              secureTextEntry={!showPassword}
+              placeholderTextColor="#aaa"
+              style={[styles.input, { flex: 1, borderWidth: 0 }]}
+              value={password}
+              onChangeText={setPassword}
+            />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons
+                name={showPassword ? 'eye' : 'eye-off'}
+                size={22}
+                color="#ff4d00"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Confirm Password</Text>
+          <View style={[styles.passwordWrapper, { borderColor: '#aaa', borderWidth: 1 }]}>
+            <TextInput
+              placeholder="••••••••"
+              secureTextEntry={!showConfirmPassword}
+              placeholderTextColor="#aaa"
+              style={[styles.input, { flex: 1, borderWidth: 0 }]}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+            <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+              <Ionicons
+                name={showConfirmPassword ? 'eye' : 'eye-off'}
+                size={22}
+                color="#ff4d00"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Animated.View>
+
+      {errorMessage ? (
+        <Text style={styles.errorText}>{errorMessage}</Text>
+      ) : null}
+
+      <Animated.View style={{ transform: [{ translateY: buttonSlide }] }}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleSignup} disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.loginText}>Let’s begin!</Text>
+          )}
+        </TouchableOpacity>
+      </Animated.View>
+
+      <TouchableOpacity style={styles.footerWrapper} onPress={() => navigation.navigate('login')}>
+        <Text style={styles.footerText}>
+          Already have an account? <Text style={styles.link}>Login here</Text>
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f7f6f8',
+    alignItems: 'center',
+    padding: 20,
+    justifyContent: 'center',
+  },
+  backIcon: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+  },
+  header: {
+    fontSize: 26,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#21032b',
+    marginBottom: 40,
+  },
+  combinedInputContainer: {
+    width: '100%',
+    backgroundColor: '#c8eff0',
+    padding: 20,
+    borderRadius: 25,
+    marginBottom: 30,
+  },errorText: {
+    color: '#ff0033',
+    textAlign: 'center',
+    marginBottom: 10,
+    fontWeight: 'bold',
+    fontSize: 16,
+    backgroundColor: '#ffe6e6',
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ff4d00',
+  },
+  
+  inputGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 20,
+    color: '#000',
+    textAlign: 'center',
+    letterSpacing: 2,
+    marginBottom: 10,
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    color: '#000',
+  },
+  passwordWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+  },
+  loginButton: {
+    backgroundColor: '#ff4d00',
+    borderRadius: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+    marginBottom: 20,
+  },
+  loginText: {
+    color: '#000',
+    fontSize: 20,
+    fontWeight: '500',
+    letterSpacing: 2,
+  },
+  footerWrapper: {
+    marginTop: 10,
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  
+  footerText: {
+    fontSize: 15,
+    color: '#21032b',
+    textAlign: 'center',
+  },
+  
+  link: {
+    color: '#ff4d00',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+  
+  link: {
+    color: '#1976d2',
+    textDecorationLine: 'underline',
+  },
+});
+
+
+  {/* scroolview{[1,2,3,4,5,6,7,6,4,54].map((item)=>{
+        return(<View style={{width:100,height:100,backgroundColor:"red",marginBottom:20,marginRight:20}}></View>)
+      })}
+      <View
+      // can do horizontal also ,map method use kar sakte ho for repeative divs display
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingBottom: 20, // Ensure there is space at the bottom of the page
+        }}
+      > */} 
+      //iske jagah use flaglist
+      // <FlagList data={[1,2,3,4,5,3,]} horizontal contentConiatinerStyle={{}}
+      // numColumns={3} grid main boxes>
+      // renderItem={({item})}=>{
+      //   retrun (<View></View>)
+      // }
+      // jsx main java script likhne ke liye we use {}
+      // <text>{{item}}
+      //header footer bhi add kar sakte ho

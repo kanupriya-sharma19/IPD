@@ -3,15 +3,19 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "components/MyButton.jsx",
+    "app/_layout.jsx",
+    "app/screens/index.jsx",
+    "app/screens/login.jsx",
+    "app/screens/signup.jsx",
+    "nativewind-env.d.ts"
   ]
 }
