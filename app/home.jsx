@@ -18,24 +18,23 @@
 //       // Check if the token exists before removing it
 //       const token = await AsyncStorage.getItem('authToken');
 //       console.log('Token before logout:', token);
-  
+
 //       await AsyncStorage.removeItem('authToken');
 //       Alert.alert('Logged out', 'You have been logged out successfully.');
-  
+
 //       // Navigate to login screen
 //       navigation.replace('login'); // Ensure 'login' screen exists in your navigation
-  
+
 //     } catch (error) {
 //       console.error('Logout error:', error);
 //       Alert.alert('Error', 'An error occurred while logging out.');
 //     }
 //   };
-  
 
 //   return (
 //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 //       <Text>Welcome</Text>
-      
+
 //       <TouchableOpacity
 //         style={{
 //           backgroundColor: '#ff4d00',
@@ -117,8 +116,7 @@
 //   category: { marginTop: 24, fontSize: 16, fontWeight: 'bold' },
 // });
 
-
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -127,78 +125,131 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+  Alert,
+} from "react-native";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    try {
+      const token = await AsyncStorage.getItem("authToken");
+      await AsyncStorage.removeItem("authToken");
+      Alert.alert("Logged out", "You have been logged out successfully.");
+      navigation.replace("login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      Alert.alert("Error", "An error occurred while logging out.");
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity>
           <Ionicons name="menu" size={33} color="black" />
         </TouchableOpacity>
         <View style={styles.searchBar}>
           <TextInput placeholder="Search for your story" style={styles.input} />
           <FontAwesome name="camera" size={20} color="black" />
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('profile')}>
+        <TouchableOpacity onPress={() => navigation.navigate("profile")}>
           <Ionicons name="person-circle-outline" size={32} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Ionicons name="log-out-outline" size={32} color="black" />
         </TouchableOpacity>
       </View>
 
-      {/* Title */}
       <Text style={styles.title}>What would you like to listen today?</Text>
 
-      {/* Story Cards */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.storyRow}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.storyRow}
+      >
         <View style={styles.storyCard}>
-          <Image source={require('../assets/images/crow.png')} style={styles.image} />
+          <Image
+            source={require("../assets/images/crow.png")}
+            style={styles.image}
+          />
           <Text style={styles.cardTitle}>Thirsty Crow</Text>
           <Text style={styles.cardSub}>1 min</Text>
         </View>
         <View style={styles.storyCard}>
-          <Image source={require('../assets/images/fox.png')} style={styles.image} />
+          <Image
+            source={require("../assets/images/fox.png")}
+            style={styles.image}
+          />
           <Text style={styles.cardTitle}>Fox and the crow</Text>
           <Text style={styles.cardSub}>2 min</Text>
         </View>
         <View style={styles.storyCard}>
-          <Image source={require('../assets/images/crow.png')} style={styles.image} />
+          <Image
+            source={require("../assets/images/crow.png")}
+            style={styles.image}
+          />
           <Text style={styles.cardTitle}>Thirsty Crow</Text>
           <Text style={styles.cardSub}>1 min</Text>
         </View>
         <View style={styles.storyCard}>
-          <Image source={require('../assets/images/crow.png')} style={styles.image} />
+          <Image
+            source={require("../assets/images/crow.png")}
+            style={styles.image}
+          />
+          <Text style={styles.cardTitle}>Thirsty Crow</Text>
+          <Text style={styles.cardSub}>1 min</Text>
+        </View>
+        <View style={styles.storyCard}>
+          <Image
+            source={require("../assets/images/crow.png")}
+            style={styles.image}
+          />
           <Text style={styles.cardTitle}>Fox and the crow</Text>
           <Text style={styles.cardSub}>1 min</Text>
         </View>
       </ScrollView>
 
-      {/* Categories */}
       <Text style={styles.sectionTitle}>Categories</Text>
       <View style={styles.categoryBox}>
-        <Image source={require('../assets/images/adventure.png')} style={styles.icon} />
+        <Image
+          source={require("../assets/images/adventure.png")}
+          style={styles.icon}
+        />
         <Text style={styles.categoryText}>Adventure</Text>
       </View>
       <View style={styles.categoryBox}>
-        <Image source={require('../assets/images/adventure.png')} style={styles.icon} />
+        <Image
+          source={require("../assets/images/adventure.png")}
+          style={styles.icon}
+        />
         <Text style={styles.categoryText}>Bed Time</Text>
       </View>
       <View style={styles.categoryBox}>
-        <Image source={require('../assets/images/adventure.png')} style={styles.icon} />
+        <Image
+          source={require("../assets/images/adventure.png")}
+          style={styles.icon}
+        />
         <Text style={styles.categoryText}>Fantasy</Text>
       </View>
       <View style={styles.categoryBox}>
-        <Image source={require('../assets/images/adventure.png')} style={styles.icon} />
+        <Image
+          source={require("../assets/images/adventure.png")}
+          style={styles.icon}
+        />
         <Text style={styles.categoryText}>Adventure</Text>
       </View>
 
-      
       <Text style={styles.sectionTitle}>Recently Listened</Text>
       <View style={styles.categoryBox}>
-        <Image source={require('../assets/images/adventure.png')} style={styles.icon} />
+        <Image
+          source={require("../assets/images/adventure.png")}
+          style={styles.icon}
+        />
         <Text style={styles.categoryText}>Kite and a Monkey</Text>
       </View>
     </ScrollView>
@@ -207,23 +258,23 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f8f8fc',
+    backgroundColor: "#f8f8fc",
     padding: 16,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
   searchBar: {
     flex: 1,
     marginHorizontal: 12,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     elevation: 2,
   },
   input: {
@@ -233,8 +284,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#2e0249',
+    fontWeight: "600",
+    color: "#2e0249",
     marginBottom: 16,
   },
   storyRow: {
@@ -242,39 +293,39 @@ const styles = StyleSheet.create({
   },
   storyCard: {
     width: 160,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 16,
     marginRight: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
     elevation: 3,
     paddingBottom: 8,
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 110,
   },
   cardTitle: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 6,
     fontSize: 14,
-    fontWeight: '600',
-    color:"46557B"
+    fontWeight: "600",
+    color: "#46557B",
   },
   cardSub: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 12,
-    color: '#46557B',
+    color: "#46557B",
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 8,
-    color: '#46557B',
+    color: "#46557B",
   },
   categoryBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
     borderRadius: 12,
     padding: 12,
     marginBottom: 12,
@@ -287,7 +338,19 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#46557B',
+    fontWeight: "500",
+    color: "#46557B",
+  },
+  logoutButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingLeft: 20,
+    marginTop: 1,
+  },
+  logoutText: {
+    fontSize: 16,
+    marginLeft: 8,
+    color: "black",
   },
 });
