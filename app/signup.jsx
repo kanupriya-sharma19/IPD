@@ -160,25 +160,23 @@ export default function SignupScreen() {
         password,
         confirmPassword,
       });
-      console.log(res.data);  // Log to check the response
-      const { userId } = res.data; // Get userId from response
+
+      const { userId } = res.data; 
   
       if (userId) {
-        // Call login API with userId to fetch the token
         const loginRes = await axios.post('https://passport-wl8y.onrender.com/user/login', {
           email,
           password,
         });
   
-        const token = loginRes.data.token; // Corrected here: token should be accessed from loginRes.data.token
+        const token = loginRes.data.token; 
         console.log(token);
   
         if (token) {
-          // Store the JWT token in AsyncStorage
           await AsyncStorage.setItem('authToken', token);
   
           Alert.alert('Success', 'Account created successfully!');
-          navigation.replace('home'); // Redirect to the home page after signup
+          navigation.replace('home'); 
         }
       }
     } catch (err) {

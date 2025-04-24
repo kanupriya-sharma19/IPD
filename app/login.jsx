@@ -20,7 +20,7 @@ export default function LoginScreen() {
     const checkLoginStatus = async () => {
       const token = await AsyncStorage.getItem('authToken');
       if (token) {
-        // Optionally validate the token with your backend if necessary
+       
         navigation.replace('home');
       }
     };
@@ -54,15 +54,13 @@ export default function LoginScreen() {
         withCredentials: true,
       });
   
-      const token = res.data.token; // Extract JWT token from the response
+      const token = res.data.token; 
   console.log(token);
       if (token) {
-        await AsyncStorage.setItem('authToken', token);  // Store the token in AsyncStorage
+        await AsyncStorage.setItem('authToken', token);  
         Alert.alert('Success', 'Logged in successfully!');
-        
-        // Check if navigation is defined before using it
-        if (navigation) {
-          navigation.replace('home');  // Navigate to home page after login
+                if (navigation) {
+          navigation.replace('home');  
         } else {
           throw new Error('Navigation object is undefined');
         }

@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Animated, Alert, ActivityIndic
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import * as ImagePicker from 'expo-image-picker'; // for image picking
+import * as ImagePicker from 'expo-image-picker'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BubbleGroup from '../components/BubbleGroup';
 
@@ -14,7 +14,7 @@ export default function ProfileScreen() {
   const [grade, setGrade] = useState('');
   const [age, setAge] = useState('');
   const [mobile, setMobile] = useState('');
-  const [profileImage, setProfileImage] = useState(null); // New state for profile image
+  const [profileImage, setProfileImage] = useState(null); 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -57,7 +57,7 @@ export default function ProfileScreen() {
           setGrade(userData.grade || '');
           setAge(userData.age?.toString() || '');
           setMobile(userData.mobile_no || '');
-          setProfileImage(userData.profile_image || null); // Set profile image if available
+          setProfileImage(userData.profile_image || null);
         } else {
           setIsAuthenticated(false);
         }
@@ -108,7 +108,6 @@ export default function ProfileScreen() {
       console.log('Selected image:', profileImage);
 
       if (profileImage) {
-        // Prepare the image for upload
         const imageData = {
           uri: profileImage,
           type: 'image/jpeg',
@@ -162,7 +161,7 @@ setTimeout(() => setErrorMessage(''), 4000);
 
       {isAuthenticated ? (
         <View style={styles.combinedInputContainer}>
-          {/* Display profile image if available */}
+         
           <View style={styles.profileImageContainer}>
           <View style={styles.profileImageContainer}>
   <Image
@@ -345,25 +344,25 @@ const styles = StyleSheet.create({
   loaderInsideButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row', // Ensures ActivityIndicator and text are aligned horizontally
+    flexDirection: 'row', 
   },
   profileImageContainer: {
-    flex: 1, // Ensures the container takes the full screen height
-    justifyContent: 'center', // Vertically centers the content
-    alignItems: 'center', // Horizontally centers the content
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
     marginBottom: 10,
   },
   profileImage: {
     width: 100,
     height: 100,
-    borderRadius: 50, // Adjusted for a perfect circle
+    borderRadius: 50, 
     borderWidth: 2,
     borderColor: '#000',
   },
   editIcon: {
     position: 'absolute',
-    bottom: -5, // Slightly adjust to fit inside the profile circle
-    right: -5, // Adjust based on your design
+    bottom: -5,
+    right: -5, 
     backgroundColor: '#000',
     borderRadius: 20,
     padding: 6,
