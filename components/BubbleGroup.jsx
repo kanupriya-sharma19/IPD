@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    backgroundColor: '#a6dee0',
+    backgroundColor: '#rgba(109,93,232,0.85)',
     position: 'absolute',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },

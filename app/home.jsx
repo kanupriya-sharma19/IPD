@@ -147,7 +147,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity>
@@ -252,13 +253,13 @@ export default function HomeScreen() {
         />
         <Text style={styles.categoryText}>Kite and a Monkey</Text>
       </View>
-    </ScrollView>
+    </ScrollView></View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#f8f8fc",
+  container: {  flex: 1,   
+    backgroundColor: "#D2AFF0",
     padding: 16,
   },
   header: {
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     flexDirection: "row",
     alignItems: "center",
-    elevation: 2,
+    elevation: 2
   },
   input: {
     flex: 1,
@@ -289,7 +290,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   storyRow: {
-    marginBottom: 24,
+    marginBottom: 24, backgroundColor: "#D2AFF0",
   },
   storyCard: {
     width: 160,
@@ -309,23 +310,23 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontSize: 14,
     fontWeight: "600",
-    color: "#46557B",
+    color: "#240332",
   },
   cardSub: {
     textAlign: "center",
     fontSize: 12,
-    color: "#46557B",
+    color: "#240332",
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "700",
     marginBottom: 8,
-    color: "#46557B",
+    color: "#211C4D",
   },
   categoryBox: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#6D5DE8",
     borderRadius: 12,
     padding: 12,
     marginBottom: 12,
@@ -339,7 +340,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#46557B",
+    color: "#FFFFFC",
   },
   logoutButton: {
     flexDirection: "row",

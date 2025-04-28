@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import BubbleGroup from '../components/BubbleGroup';
 export default function LoginScreen() {
   const emailOpacity = useRef(new Animated.Value(0)).current;
   const buttonSlide = useRef(new Animated.Value(100)).current;
@@ -78,6 +78,7 @@ export default function LoginScreen() {
   
   return (
     <View style={styles.container}>
+       <BubbleGroup />
       <TouchableOpacity style={styles.backIcon} onPress={() => navigation.replace('index')}>
         <Ionicons name="arrow-back" size={30} color="#000" />
       </TouchableOpacity>
@@ -109,7 +110,7 @@ export default function LoginScreen() {
               onChangeText={setPassword}
             />
             <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)}>
-              <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={20} color="#ff4d00" />
+              <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={20} color="black" />
             </TouchableOpacity>
             
           </View>
@@ -144,7 +145,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f6f8',
+    backgroundColor: '#D2AFF0',
     alignItems: 'center',
     padding: 20,
     justifyContent: 'center',
@@ -158,12 +159,12 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: '600',
     textAlign: 'center',
-    color: '#21032b',
+    color: '#211C4D',
     marginBottom: 40,
   },
   combinedInputContainer: {
     width: '100%',
-    backgroundColor: '#c8eff0',
+    backgroundColor: '#rgba(109,93,232,0.85)',
     borderRadius: 20,
     padding: 20,
     marginBottom: 20,
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 10,
-    color: '#000',
+    color: '#211C4D',
     textAlign: 'center',
     letterSpacing: 1,
   },
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
   },
   
   loginButton: {
-    backgroundColor: '#ff4d00',
+    backgroundColor: '#6D5DE8',
     borderRadius: 20,
     paddingVertical: 15,
     paddingHorizontal: 40,

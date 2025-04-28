@@ -288,7 +288,7 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f6f8',
+    backgroundColor: '#D2AFF0',
     alignItems: 'center',
     padding: 20,
     justifyContent: 'center',
@@ -302,12 +302,12 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: '600',
     textAlign: 'center',
-    color: '#21032b',
+    color: '#211C4D',
     marginBottom: 40,
   },
   combinedInputContainer: {
     width: '100%',
-    backgroundColor: '#c8eff0',
+    backgroundColor: '#rgba(109,93,232,0.85)',
     padding: 20,
     borderRadius: 25,
     marginBottom: 30,
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   loginButton: {
-    backgroundColor: '#ff4d00',
+    backgroundColor: '#6D5DE8',
     borderRadius: 25,
     paddingVertical: 15,
     paddingHorizontal: 40,
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   loginText: {
-    color: '#000',
+    color: '#fff',
     fontSize: 20,
     fontWeight: '500',
     letterSpacing: 2,

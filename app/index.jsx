@@ -122,19 +122,19 @@ export default function WelcomeScreen() {
         ]}
       >
         <TouchableOpacity
-          style={styles.button}
+          style={styles.loginButton}
           onPress={() => navigation.navigate('login')}
         >
-          <Text style={styles.buttonText}>LOGIN</Text>
+          <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
 
         <Text style={styles.orText}>OR</Text>
 
         <TouchableOpacity
-          style={styles.button}
+          style={styles.loginButton}
           onPress={() => navigation.navigate('signup')}
         >
-          <Text style={styles.buttonText}>SIGN-UP</Text>
+          <Text style={styles.loginText}>SIGN-UP</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -144,7 +144,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#404E75',
+    backgroundColor: '#C194E8',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   imageWrapper: {
     width: 320,
     height: 320,
-    backgroundColor: '#FACC15',
+    backgroundColor: 'rgba(240,229,138,0.85)',
     borderRadius: 160,
     justifyContent: 'center',
     alignItems: 'center',
@@ -162,6 +162,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 5 },
     shadowRadius: 10,
+  },
+  loginButton: {
+    backgroundColor: '#6D5DE8',
+    borderRadius: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+    alignItems: 'center',
+  },
+  loginText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 1,
   },
   image: {
     width: 300,
@@ -175,28 +193,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   tagline: {
-    color: '#FDE3B0',
+    color: '#FFFEFC',
     fontSize: 18,
     fontWeight: '500',
     textAlign: 'center',
     marginBottom: 40,
   },
-  buttonContainer: {
-    width: '100%',
-  },
-  button: {
-    backgroundColor: 'white',
-    paddingVertical: 14,
-    borderRadius: 30,
-    marginBottom: 16,
-  },
-  buttonText: {
-    color: '#404E75',
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-  },
+
+
   orText: {
     color: 'white',
     fontSize: 16,

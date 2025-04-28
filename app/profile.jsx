@@ -62,7 +62,6 @@ export default function ProfileScreen() {
           setIsAuthenticated(false);
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
         setIsAuthenticated(false);
       } finally {
         setLoading(false);
@@ -105,7 +104,6 @@ export default function ProfileScreen() {
       formData.append('grade', grade);
       formData.append('age', age);
       formData.append('mobile_no', mobile);
-      console.log('Selected image:', profileImage);
 
       if (profileImage) {
         const imageData = {
@@ -152,118 +150,114 @@ setTimeout(() => setErrorMessage(''), 4000);
 
   return (
     <View style={styles.container}>
-      <BubbleGroup />
-      <TouchableOpacity style={styles.backIcon} onPress={() => navigation.navigate('home')}>
-        <Ionicons name="arrow-back" size={30} color="#000" />
-      </TouchableOpacity>
-      
-      <Text style={styles.header}>Profile</Text>
-
-      {isAuthenticated ? (
-        <View style={styles.combinedInputContainer}>
-         
-          <View style={styles.profileImageContainer}>
-          <View style={styles.profileImageContainer}>
-  <Image
-    source={profileImage ? { uri: profileImage } : require('../assets/images/my.jpg')}
-    style={styles.profileImage}
-  />
+    <BubbleGroup />
+    <TouchableOpacity style={styles.backIcon} onPress={() => navigation.navigate('home')}>
+      <Ionicons name="arrow-back" size={30} color="#000" />
+    </TouchableOpacity>
+    
+    <Text style={styles.header}>Profile</Text>
   
-  <TouchableOpacity style={styles.changeImageButton} onPress={handleImagePick}>
-    <Text style={styles.changeImageText}>Change Profile Picture</Text>
-  </TouchableOpacity>
-</View>
-
-</View>
-
-
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
+    {isAuthenticated ? (
+      <View style={styles.combinedInputContainer}>
+  
+        <View style={styles.profileImageContainer}>
+          <Image
+            source={profileImage ? { uri: profileImage } : require('../assets/images/my.jpg')}
+            style={styles.profileImage}
+          />
+          <TouchableOpacity style={styles.changeImageButton} onPress={handleImagePick}>
+            <Text style={styles.changeImageText}>Change Profile Picture</Text>
+          </TouchableOpacity>
+        </View>
+  
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
             style={[styles.input, { backgroundColor: '#eee' }]}
-              value={email}
-              placeholder="demo@gmail.com"
-              onChangeText={setEmail}
-              editable={false}
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
+            value={email}
+            placeholder="demo@gmail.com"
+            onChangeText={setEmail}
+            editable={false}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+        </View>
+  
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Username</Text>
+          <TextInput
+            style={styles.input}
+            value={username}
+            placeholder="What would u like to be called"
+            onChangeText={setUsername}
+          />
+        </View>
+  
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Grade</Text>
+          <TextInput
+            style={styles.input}
+            value={grade}
+            placeholder="Your Grade"
+            onChangeText={setGrade}
+          />
+        </View>
+  
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Age</Text>
+          <TextInput
+            style={styles.input}
+            value={age}
+            placeholder="Your Age"
+            keyboardType="numeric"
+            onChangeText={setAge}
+          />
+        </View>
+  
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Mobile No</Text>
+          <TextInput
+            style={styles.input}
+            value={mobile}
+            placeholder="Your phone number"
+            keyboardType="phone-pad"
+            onChangeText={setMobile}
+          />
+        </View>
+  
+        {errorMessage ? (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{errorMessage}</Text>
           </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Username</Text>
-            <TextInput
-              style={styles.input}
-              value={username}
-              placeholder="What would u like to be called"
-              onChangeText={setUsername}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Grade</Text>
-            <TextInput
-              style={styles.input}
-              value={grade}
-              placeholder="Your Grade"
-              onChangeText={setGrade}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Age</Text>
-            <TextInput
-              style={styles.input}
-              value={age}
-              placeholder="Your Age"
-              keyboardType="numeric"
-              onChangeText={setAge}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Mobile No</Text>
-            <TextInput
-              style={styles.input}
-              value={mobile}
-              placeholder="Your phone number"
-              keyboardType="phone-pad"
-              onChangeText={setMobile}
-            />
-          </View>
-          {errorMessage ? (
-  <View style={styles.errorContainer}>
-    <Text style={styles.errorText}>{errorMessage}</Text>
-  </View>
-) : null}
-<Animated.View style={{ transform: [{ translateY: buttonSlide }] }}>
-  <TouchableOpacity style={styles.loginButton} onPress={handleSave}>
-    {loading ? (
-      <View style={styles.loaderInsideButton}>
-        <ActivityIndicator size="small" color="#fff" />
+        ) : null}
+  
       </View>
     ) : (
-      <Text style={styles.loginText}>Save Changes</Text>
+      <View style={styles.profileImageContainer}>
+        <Text style={styles.message}>Please log in to edit your profile.</Text>
+      </View>
     )}
-  </TouchableOpacity>
-</Animated.View>
-
-        </View>
-      ) : (
-        <View style={styles.profileImageContainer}>
-          <Text style={styles.message}>Please log in to edit your profile.</Text>
-        </View>
+  
+    <Animated.View style={{ transform: [{ translateY: buttonSlide }] }}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleSave}>
+        {loading ? (
+          <View style={styles.loaderInsideButton}>
+            <ActivityIndicator size="small" color="#fff" />
+          </View>
+        ) : (
+          <Text style={styles.loginText}>Save Changes</Text>
+        )}
+      </TouchableOpacity>
+    </Animated.View>
+  </View>
+  
       )}
-    </View>
-  );
-}
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f6f8',
+    backgroundColor: '#D2AFF0',
     alignItems: 'center',
     padding: 20,
     justifyContent: 'center',
@@ -277,26 +271,15 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: '600',
     textAlign: 'center',
-    color: '#21032b',
-    marginBottom: 30,
+    color: '#211C4D',
+    marginTop:'20'
   },
   combinedInputContainer: {
     width: '100%',
-    backgroundColor: '#c8eff0',
+    backgroundColor: 'rgba(109,93,232,0.85)',
     padding: 10,
     borderRadius: 25,
-    marginBottom: 0,height:'90%'
-  },errorText: {
-    color: '#ff0033',
-    textAlign: 'center',
-    marginBottom: 10,
-    fontWeight: 'bold',
-    fontSize: 16,
-    backgroundColor: '#ffe6e6',
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ff4d00',
+    marginBottom: 20
   },changeImageButton: {
     marginTop: 10,
     backgroundColor: '#fff',
@@ -320,7 +303,7 @@ const styles = StyleSheet.create({
   
   
   inputGroup: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   label: {
     fontSize: 15,
@@ -347,10 +330,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
   },
   profileImageContainer: {
-    flex: 1, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    marginBottom: 10,
+    marginBottom: 20,
   },
   profileImage: {
     width: 100,
@@ -387,7 +369,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   loginButton: {
-    backgroundColor: '#ff4d00',
+    backgroundColor: '#6D5DE8',
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -399,7 +381,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   loginText: {
-    color: '#000',
+    color: '#fff',
     fontSize: 20,
     fontWeight: '500',
     letterSpacing: 2,
@@ -407,7 +389,7 @@ const styles = StyleSheet.create({
     
   },
   footerWrapper: {
-    marginTop: 10,
+    marginTop: 8,
     backgroundColor: '#fff',
     paddingVertical: 12,
     paddingHorizontal: 25,
@@ -425,14 +407,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   
-  link: {
-    color: '#ff4d00',
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
-  },
-  
-  link: {
-    color: '#1976d2',
-    textDecorationLine: 'underline',
-  },
 });
